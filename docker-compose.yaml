@@ -1,0 +1,65 @@
+version: "3.6"
+services:
+  device-demo:
+    build: device-demo
+    image: docker.io/iotkitdemo/device-demo
+  iot-admin:
+    build: iot-admin
+    image: docker.io/iotkitdemo/iot-admin
+    ports:
+    - 8082:80
+    secrets:
+    - github-username
+    - github-repo
+    - jenkins-url
+    - jenkins-username
+    - jenkins-password
+    - docker-hub-username
+    - server-dns
+    - source: server-docker-ca
+      target: /certs/server/ca.pem
+    - source: server-docker-cert
+      target: /certs/server/cert.pem
+    - source: server-docker-key
+      target: /certs/server/key.pem
+    - device-ip
+    - source: device-docker-ca
+      target: /certs/device/ca.pem
+    - source: device-docker-cert
+      target: /certs/device/cert.pem
+    - source: device-docker-key
+      target: /certs/device/key.pem
+  service-demo:
+    build: service-demo
+    image: docker.io/iotkitdemo/service-demo
+    ports:
+    - 8081:80
+secrets:
+  device-docker-ca:
+    file: arm-device/certs/ca.pem
+  device-docker-cert:
+    file: arm-device/certs/cert.pem
+  device-docker-key:
+    file: arm-device/certs/key.pem
+  device-ip:
+    file: arm-device/configs/device-ip
+  docker-hub-username:
+    file: arm-build-server/secrets/docker-hub-username
+  github-repo:
+    file: arm-build-server/configs/github-repo
+  github-username:
+    file: arm-build-server/configs/github-username
+  jenkins-password:
+    file: arm-build-server/secrets/jenkins-password
+  jenkins-url:
+    file: arm-build-server/configs/jenkins-url
+  jenkins-username:
+    file: arm-build-server/secrets/jenkins-username
+  server-dns:
+    file: arm-build-server/configs/server-dns
+  server-docker-ca:
+    file: arm-build-server/certs/ca.pem
+  server-docker-cert:
+    file: arm-build-server/certs/cert.pem
+  server-docker-key:
+    file: arm-build-server/certs/key.pem

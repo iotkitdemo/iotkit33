@@ -1,0 +1,4 @@
+iot-admin:
+  port: 8082
+service-demo:
+  port: 8081
